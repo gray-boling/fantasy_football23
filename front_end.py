@@ -51,7 +51,7 @@ infer_df['Highest_Projected_Points'] = (infer_df['Projected_PPR_Points'] + mse).
 user_input_player = stl.text_input("Search team by city/name in the field below")
 if user_input_player:
     per_team = pd.DataFrame(infer_df[(infer_df['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
-                                     (infer_df['recent_team'].str.contains(str(user_input_player.title().upper(git))))] \
+                                     (infer_df['recent_team'].str.contains(str(user_input_player.title().upper())))] \
                             [['player_name', 'Projected_PPR_Points',	'Lowest_Projected_Points',	'Highest_Projected_Points']])
     stl.dataframe(per_team)
 else:
