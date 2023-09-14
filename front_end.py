@@ -42,9 +42,10 @@ infer_df['ran_for_pipe_preds'] = ran_for_pipe.predict(infer_df[feature_list])
 
 infer_df['Projected_PPR_Points'] = (infer_df['gb_pipe_preds'] + infer_df['lin_reg_pipe_preds'] + infer_df['ran_for_pipe_preds'])
 infer_df['Projected_PPR_Points'] = (infer_df['Projected_PPR_Points'] / float(3)).round(1)
-infer_df['Lowest_Projected_Points'] = (infer_df['Projected_PPR_Points'] - mean_squared_error(infer_df['fantasy_points_ppr'], infer_df['Projected_PPR_Points'], squared=False)).round(1)
+mse = mean_squared_error(infer_df['fantasy_points_ppr'], infer_df['Projected_PPR_Points'], squared=False)
+infer_df['Lowest_Projected_Points'] = (infer_df['Projected_PPR_Points'] - mse).round(1)
 infer_df['Lowest_Projected_Points'] = np.where(infer_df['Lowest_Projected_Points'] < 0, 0, infer_df['Lowest_Projected_Points'])
-infer_df['Highest_Projected_Points'] = (infer_df['Projected_PPR_Points'] + mean_squared_error(infer_df['fantasy_points_ppr'], infer_df['Projected_PPR_Points'], squared=False)).round(1)
+infer_df['Highest_Projected_Points'] = (infer_df['Projected_PPR_Points'] + mse).round(1)
 
 
 user_input_player = stl.text_input("Search team by city/name in the field below")
