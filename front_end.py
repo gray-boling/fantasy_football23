@@ -68,7 +68,7 @@ if rb:
     per_rb.set_index('rank', inplace=True)
     stl.dataframe(per_rb)
 
-qb = stl.checkbox('Sort RBs')
+qb = stl.checkbox('Sort RBs', key='qb')
 if qb:
     per_qb = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
     per_qb = per_qb.sort_values('Projected_PPR_Points', ascending=False)
@@ -80,7 +80,7 @@ if qb:
     per_qb.set_index('rank', inplace=True)
     stl.dataframe(per_qb)
 
-wr = stl.checkbox('Sort RBs')
+wr = stl.checkbox('Sort RBs', key='wr')
 if wr:
     per_wr = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
     per_wr = per_wr.sort_values('Projected_PPR_Points', ascending=False)
@@ -92,7 +92,7 @@ if wr:
     per_wr.set_index('rank', inplace=True)
     stl.dataframe(per_wr)
 
-te = stl.checkbox('Sort RBs')
+te = stl.checkbox('Sort RBs', key='te')
 if te:
     per_te = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
     per_te = per_te.sort_values('Projected_PPR_Points', ascending=False)
