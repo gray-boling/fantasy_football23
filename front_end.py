@@ -56,8 +56,18 @@ if user_input_player:
     per_team = per_team.reset_index()
     stl.dataframe(per_team)
 
-rb = stl.checkbox('Sort RBs')
-if rb:
+checks = stl.columns(4)
+with checks[0]:
+    stl.checkbox('Sort RBs')
+with checks[1]:
+    stl.checkbox('Sort QBs')
+with checks[2]:
+    stl.checkbox('Sort WRs')
+with checks[3]:
+    stl.checkbox('Sort TEs')
+
+# rb = stl.checkbox('Sort RBs')
+if checks[0]:
     per_rb = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
     per_rb = per_rb.sort_values('Projected_PPR_Points', ascending=False)
     per_rb = pd.DataFrame(per_rb[(per_rb['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
@@ -67,12 +77,9 @@ if rb:
     per_rb['rank'] = range(len(per_rb))
     per_rb.set_index('rank', inplace=True)
     stl.dataframe(per_rb)
-else:
-    infer_df.sort_values('Projected_PPR_Points', ascending=False) \
-        [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
 
-qb = stl.checkbox('Sort QBs', key='qb')
-if qb:
+# qb = stl.checkbox('Sort QBs', key='qb')
+if checks[2]:
     per_qb = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
     per_qb = per_qb.sort_values('Projected_PPR_Points', ascending=False)
     per_qb = pd.DataFrame(per_qb[(per_qb['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
@@ -82,12 +89,9 @@ if qb:
     per_qb['rank'] = range(len(per_qb))
     per_qb.set_index('rank', inplace=True)
     stl.dataframe(per_qb)
-else:
-    infer_df.sort_values('Projected_PPR_Points', ascending=False) \
-        [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
 
-wr = stl.checkbox('Sort WRs', key='wr')
-if wr:
+# wr = stl.checkbox('Sort WRs', key='wr')
+if checks[3]:
     per_wr = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
     per_wr = per_wr.sort_values('Projected_PPR_Points', ascending=False)
     per_wr = pd.DataFrame(per_wr[(per_wr['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
@@ -97,12 +101,9 @@ if wr:
     per_wr['rank'] = range(len(per_wr))
     per_wr.set_index('rank', inplace=True)
     stl.dataframe(per_wr)
-else:
-    infer_df.sort_values('Projected_PPR_Points', ascending=False) \
-        [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
 
-te = stl.checkbox('Sort TEs', key='te')
-if te:
+# te = stl.checkbox('Sort TEs', key='te')
+if checks[4]:
     per_te = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
     per_te = per_te.sort_values('Projected_PPR_Points', ascending=False)
     per_te = pd.DataFrame(per_te[(per_te['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
