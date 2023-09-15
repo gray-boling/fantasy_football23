@@ -58,7 +58,8 @@ if user_input_player:
 
 rb = stl.checkbox('Sort RBs')
 if rb:
-    per_rb = infer_df[infer_df['position'] == 'RB'].sort_values('Projected_PPR_Points', ascending=False)
+    per_rb = infer_df[infer_df['position'] == 'RB']
+    per_rb = per_rb.sort_values('Projected_PPR_Points', ascending=False)
     per_rb = pd.DataFrame(infer_df[(infer_df['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                      (infer_df['Team'].str.contains(str(user_input_player.title().upper())))] \
                                 [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
