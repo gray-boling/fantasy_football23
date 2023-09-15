@@ -81,3 +81,6 @@ def get_infer_df(sched, weekly):
   # infer_df['week'] = infer_df['week'] + 1
   # infer_df = player_sched_join(infer_df,sched)
   return infer_df
+
+def path_to_image_html(path):
+    return '<img src="'+ path + '" width="65" >'
