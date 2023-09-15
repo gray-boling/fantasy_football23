@@ -58,16 +58,16 @@ if user_input_player:
 
 checks = stl.columns(4)
 with checks[0]:
-    stl.checkbox('Sort RBs')
+    stl.checkbox('Sort RBs', key='RB')
 with checks[1]:
-    stl.checkbox('Sort QBs')
+    stl.checkbox('Sort QBs', key='QB')
 with checks[2]:
-    stl.checkbox('Sort WRs')
+    stl.checkbox('Sort WRs', key='WR')
 with checks[3]:
-    stl.checkbox('Sort TEs')
+    stl.checkbox('Sort TEs', key='TE')
 
 # rb = stl.checkbox('Sort RBs')
-if checks[0]:
+if stl.session_state['RB']:
     per_rb = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
     per_rb = per_rb.sort_values('Projected_PPR_Points', ascending=False)
     per_rb = pd.DataFrame(per_rb[(per_rb['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
@@ -79,8 +79,8 @@ if checks[0]:
     stl.dataframe(per_rb)
 
 # qb = stl.checkbox('Sort QBs', key='qb')
-if checks[2]:
-    per_qb = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
+if stl.session_state['QB']:
+    per_qb = pd.DataFrame(infer_df[(infer_df['position'] == 'QB')])
     per_qb = per_qb.sort_values('Projected_PPR_Points', ascending=False)
     per_qb = pd.DataFrame(per_qb[(per_qb['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                      (per_qb['Team'].str.contains(str(user_input_player.title().upper())))] \
@@ -91,8 +91,8 @@ if checks[2]:
     stl.dataframe(per_qb)
 
 # wr = stl.checkbox('Sort WRs', key='wr')
-if checks[3]:
-    per_wr = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
+if stl.session_state['WR']:
+    per_wr = pd.DataFrame(infer_df[(infer_df['position'] == 'WR')])
     per_wr = per_wr.sort_values('Projected_PPR_Points', ascending=False)
     per_wr = pd.DataFrame(per_wr[(per_wr['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                      (per_wr['Team'].str.contains(str(user_input_player.title().upper())))] \
@@ -103,8 +103,8 @@ if checks[3]:
     stl.dataframe(per_wr)
 
 # te = stl.checkbox('Sort TEs', key='te')
-if checks[4]:
-    per_te = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
+if stl.session_state['TE']:
+    per_te = pd.DataFrame(infer_df[(infer_df['position'] == 'TE')])
     per_te = per_te.sort_values('Projected_PPR_Points', ascending=False)
     per_te = pd.DataFrame(per_te[(per_te['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                      (per_te['Team'].str.contains(str(user_input_player.title().upper())))] \
