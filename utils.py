@@ -60,19 +60,19 @@ def get_infer_df(sched, weekly):
     date_setter = sched[sched['gameday'] >= today]
     first_game_of_week = date_setter['gameday'].min().normalize()
     last_game_of_week = first_game_of_week + pd.Timedelta(3, unit="d")
-    if today.strftime("%A") == 'Friday':
+  if today.strftime("%A") == 'Friday':
         date_setter = sched[sched['gameday'] >= today - pd.Timedelta(1, unit="d")]
         first_game_of_week = date_setter['gameday'].min().normalize()
         last_game_of_week = first_game_of_week + pd.Timedelta(3, unit="d")
-    if today.strftime("%A") == 'Saturday':
+  if today.strftime("%A") == 'Saturday':
         date_setter = sched[sched['gameday'] >= today - pd.Timedelta(2, unit="d")]
         first_game_of_week = date_setter['gameday'].min().normalize()
         last_game_of_week = first_game_of_week + pd.Timedelta(3, unit="d")
-    if today.strftime("%A") == 'Sunday':
+  if today.strftime("%A") == 'Sunday':
         date_setter = sched[sched['gameday'] >= today - pd.Timedelta(3, unit="d")]
         first_game_of_week = date_setter['gameday'].min().normalize()
         last_game_of_week = first_game_of_week + pd.Timedelta(3, unit="d")
-    if today.strftime("%A") == 'Monday':
+  if today.strftime("%A") == 'Monday':
         date_setter = sched[sched['gameday'] >= today - pd.Timedelta(4, unit="d")]
         first_game_of_week = date_setter['gameday'].min().normalize()
         last_game_of_week = first_game_of_week + pd.Timedelta(3, unit="d")
