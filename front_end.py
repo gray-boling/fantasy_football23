@@ -46,14 +46,14 @@ mse = mean_squared_error(infer_df['fantasy_points_ppr'], infer_df['Projected_PPR
 infer_df['Lowest_Projected_Points'] = (infer_df['Projected_PPR_Points'] - mse).round(1)
 infer_df['Lowest_Projected_Points'] = np.where(infer_df['Lowest_Projected_Points'] < 0, 0, infer_df['Lowest_Projected_Points'])
 infer_df['Highest_Projected_Points'] = (infer_df['Projected_PPR_Points'] + mse).round(1)
-
+infer_df = infer_df.rename(columns={"recent_team": "Team", "player_name": "Player"})
 
 user_input_player = stl.text_input("Search team by city/name in the field below")
 if user_input_player:
     per_team = pd.DataFrame(infer_df[(infer_df['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                      (infer_df['recent_team'].str.contains(str(user_input_player.title().upper())))] \
-                            [['recent_team', 'player_name', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']])
-    per_team.reset_index(drop=True, inplace=True).rename(columns={"recent_team": "Team", "player_name": "Player"})
+                            [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']])
+    per_team = per_team.reset_index(drop=True)
     stl.dataframe(per_team)
 else:
     infer_df.sort_values('Projected_PPR_Points', ascending=False) \
