@@ -113,7 +113,7 @@ if stl.session_state['TE']:
     per_te['rank'] = range(len(per_te))
     per_te.set_index('rank', inplace=True)
     stl.dataframe(per_te)
-else:
+if not ((stl.session_state['RB']) | (stl.session_state['QB']) | (stl.session_state['WR']) | (stl.session_state['TE'])):
     infer_df.sort_values('Projected_PPR_Points', ascending=False) \
         [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
 stl.text("")
