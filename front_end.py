@@ -57,5 +57,5 @@ if user_input_player:
     stl.dataframe(per_team)
 else:
     infer_df.sort_values('Projected_PPR_Points', ascending=False) \
-        [['Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
+        [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
 stl.text("")
