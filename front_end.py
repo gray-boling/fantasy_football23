@@ -65,6 +65,7 @@ if rb:
                                   'Highest_Projected_Points']])
     per_rb['rank'] = range(len(per_rb))
     per_rb.set_index('rank', inplace=True)
+    per_rb
 else:
     infer_df.sort_values('Projected_PPR_Points', ascending=False) \
         [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
