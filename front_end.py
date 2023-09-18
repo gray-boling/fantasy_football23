@@ -67,7 +67,7 @@ if user_input_player:
     per_team = pd.DataFrame(infer_df[(infer_df['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                      (infer_df['Team'].str.contains(str(user_input_player.title().upper())))] \
                             [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']])
-    per_team = per_team.reset_index()
+    per_team = per_team.reset_index(drop=True)
     stl.dataframe(per_team)
 else:
 
@@ -80,6 +80,7 @@ else:
                                     [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
                                       'Highest_Projected_Points']])
         per_rb['rank'] = range(len(per_rb))
+        per_rb['rank'] = per_rb['rank'] + 1
         per_rb.set_index('rank', inplace=True)
         stl.dataframe(per_rb)
 
@@ -92,6 +93,7 @@ else:
                                     [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
                                       'Highest_Projected_Points']])
         per_qb['rank'] = range(len(per_qb))
+        per_qb['rank'] = per_qb['rank'] + 1
         per_qb.set_index('rank', inplace=True)
         stl.dataframe(per_qb)
 
@@ -104,6 +106,7 @@ else:
                                     [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
                                       'Highest_Projected_Points']])
         per_wr['rank'] = range(len(per_wr))
+        per_wr['rank'] = per_wr['rank'] + 1
         per_wr.set_index('rank', inplace=True)
         stl.dataframe(per_wr)
 
@@ -116,6 +119,7 @@ else:
                                     [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
                                       'Highest_Projected_Points']])
         per_te['rank'] = range(len(per_te))
+        per_te['rank'] = per_te['rank'] + 1
         per_te.set_index('rank', inplace=True)
         stl.dataframe(per_te)
     if not ((stl.session_state['RB']) | (stl.session_state['QB']) | (stl.session_state['WR']) | (stl.session_state['TE'])):
