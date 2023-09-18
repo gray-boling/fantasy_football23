@@ -1,10 +1,10 @@
 import pandas as pd
 
 from utils import *
-
+#
 stl.title("NFL Fantasy Predictor 2023")
-
-
+#
+#
 here = os.path.dirname(os.path.abspath(__file__))
 
 sched_url = os.path.join(here, 'full_season.csv')
@@ -48,13 +48,9 @@ infer_df['Lowest_Projected_Points'] = np.where(infer_df['Lowest_Projected_Points
 infer_df['Highest_Projected_Points'] = (infer_df['Projected_PPR_Points'] + mse).round(1)
 infer_df = infer_df.rename(columns={"recent_team": "Team", "player_name": "Player"})
 
-user_input_player = stl.text_input("Search team by city/name in the field below")
-if user_input_player:
-    per_team = pd.DataFrame(infer_df[(infer_df['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
-                                     (infer_df['Team'].str.contains(str(user_input_player.title().upper())))] \
-                            [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']])
-    per_team = per_team.reset_index()
-    stl.dataframe(per_team)
+week = infer_df['week'].values[0]
+if not os.path.isfile(os.path.join(here, f'week{week}_df.csv')):
+    infer_df.to_csv(os.path.join(here, f'week{week}_df.csv'))
 
 checks = stl.columns(4)
 with checks[0]:
@@ -66,54 +62,64 @@ with checks[2]:
 with checks[3]:
     stl.checkbox('Sort TEs', key='TE')
 
-# rb = stl.checkbox('Sort RBs')
-if stl.session_state['RB']:
-    per_rb = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
-    per_rb = per_rb.sort_values('Projected_PPR_Points', ascending=False)
-    per_rb = pd.DataFrame(per_rb[(per_rb['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
-                                     (per_rb['Team'].str.contains(str(user_input_player.title().upper())))] \
-                                [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
-                                  'Highest_Projected_Points']])
-    per_rb['rank'] = range(len(per_rb))
-    per_rb.set_index('rank', inplace=True)
-    stl.dataframe(per_rb)
+user_input_player = stl.text_input("Search team by city/name in the field below")
+if user_input_player:
+    per_team = pd.DataFrame(infer_df[(infer_df['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
+                                     (infer_df['Team'].str.contains(str(user_input_player.title().upper())))] \
+                            [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']])
+    per_team = per_team.reset_index()
+    stl.dataframe(per_team)
+else:
 
-# qb = stl.checkbox('Sort QBs', key='qb')
-if stl.session_state['QB']:
-    per_qb = pd.DataFrame(infer_df[(infer_df['position'] == 'QB')])
-    per_qb = per_qb.sort_values('Projected_PPR_Points', ascending=False)
-    per_qb = pd.DataFrame(per_qb[(per_qb['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
-                                     (per_qb['Team'].str.contains(str(user_input_player.title().upper())))] \
-                                [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
-                                  'Highest_Projected_Points']])
-    per_qb['rank'] = range(len(per_qb))
-    per_qb.set_index('rank', inplace=True)
-    stl.dataframe(per_qb)
+    # rb = stl.checkbox('Sort RBs')
+    if stl.session_state['RB']:
+        per_rb = pd.DataFrame(infer_df[(infer_df['position'] == 'RB')])
+        per_rb = per_rb.sort_values('Projected_PPR_Points', ascending=False)
+        per_rb = pd.DataFrame(per_rb[(per_rb['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
+                                         (per_rb['Team'].str.contains(str(user_input_player.title().upper())))] \
+                                    [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
+                                      'Highest_Projected_Points']])
+        per_rb['rank'] = range(len(per_rb))
+        per_rb.set_index('rank', inplace=True)
+        stl.dataframe(per_rb)
 
-# wr = stl.checkbox('Sort WRs', key='wr')
-if stl.session_state['WR']:
-    per_wr = pd.DataFrame(infer_df[(infer_df['position'] == 'WR')])
-    per_wr = per_wr.sort_values('Projected_PPR_Points', ascending=False)
-    per_wr = pd.DataFrame(per_wr[(per_wr['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
-                                     (per_wr['Team'].str.contains(str(user_input_player.title().upper())))] \
-                                [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
-                                  'Highest_Projected_Points']])
-    per_wr['rank'] = range(len(per_wr))
-    per_wr.set_index('rank', inplace=True)
-    stl.dataframe(per_wr)
+    # qb = stl.checkbox('Sort QBs', key='qb')
+    if stl.session_state['QB']:
+        per_qb = pd.DataFrame(infer_df[(infer_df['position'] == 'QB')])
+        per_qb = per_qb.sort_values('Projected_PPR_Points', ascending=False)
+        per_qb = pd.DataFrame(per_qb[(per_qb['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
+                                         (per_qb['Team'].str.contains(str(user_input_player.title().upper())))] \
+                                    [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
+                                      'Highest_Projected_Points']])
+        per_qb['rank'] = range(len(per_qb))
+        per_qb.set_index('rank', inplace=True)
+        stl.dataframe(per_qb)
 
-# te = stl.checkbox('Sort TEs', key='te')
-if stl.session_state['TE']:
-    per_te = pd.DataFrame(infer_df[(infer_df['position'] == 'TE')])
-    per_te = per_te.sort_values('Projected_PPR_Points', ascending=False)
-    per_te = pd.DataFrame(per_te[(per_te['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
-                                     (per_te['Team'].str.contains(str(user_input_player.title().upper())))] \
-                                [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
-                                  'Highest_Projected_Points']])
-    per_te['rank'] = range(len(per_te))
-    per_te.set_index('rank', inplace=True)
-    stl.dataframe(per_te)
-if not ((stl.session_state['RB']) | (stl.session_state['QB']) | (stl.session_state['WR']) | (stl.session_state['TE'])):
-    infer_df.sort_values('Projected_PPR_Points', ascending=False) \
-        [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
+    # wr = stl.checkbox('Sort WRs', key='wr')
+    if stl.session_state['WR']:
+        per_wr = pd.DataFrame(infer_df[(infer_df['position'] == 'WR')])
+        per_wr = per_wr.sort_values('Projected_PPR_Points', ascending=False)
+        per_wr = pd.DataFrame(per_wr[(per_wr['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
+                                         (per_wr['Team'].str.contains(str(user_input_player.title().upper())))] \
+                                    [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
+                                      'Highest_Projected_Points']])
+        per_wr['rank'] = range(len(per_wr))
+        per_wr.set_index('rank', inplace=True)
+        stl.dataframe(per_wr)
+
+    # te = stl.checkbox('Sort TEs', key='te')
+    if stl.session_state['TE']:
+        per_te = pd.DataFrame(infer_df[(infer_df['position'] == 'TE')])
+        per_te = per_te.sort_values('Projected_PPR_Points', ascending=False)
+        per_te = pd.DataFrame(per_te[(per_te['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
+                                         (per_te['Team'].str.contains(str(user_input_player.title().upper())))] \
+                                    [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
+                                      'Highest_Projected_Points']])
+        per_te['rank'] = range(len(per_te))
+        per_te.set_index('rank', inplace=True)
+        stl.dataframe(per_te)
+    if not ((stl.session_state['RB']) | (stl.session_state['QB']) | (stl.session_state['WR']) | (stl.session_state['TE'])):
+        infer_df.sort_values('Projected_PPR_Points', ascending=False) \
+            [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
+    stl.text("")
 stl.text("")
