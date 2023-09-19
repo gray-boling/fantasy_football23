@@ -18,13 +18,18 @@ lin_reg_pipe = load(os.path.join(here, 'LinearRegression.joblib'))
 ran_for_pipe = load(os.path.join(here, 'RandomForestRegressor.joblib'))
 
 infer_df = get_infer_df(sched, weekly)
+games_dict = dict(zip(infer_df['home_team'], infer_df['away_team']))
+reverse_games_dict = {v: k for k, v in games_dict.items()}
 
 weekly['week'] = weekly['week'] + 1
 drop_cols = [col for col in sched.columns if 'season' not in col and 'week' not in col]
 weekly = weekly.drop(drop_cols, axis=1)
-weekly = player_sched_join(weekly, infer_df)
-
+# weekly = player_sched_join(weekly, infer_df)
 infer_df = player_sched_join(weekly, infer_df)
+
+#TODO: fix
+infer_df['player_is_home'] = np.where(infer_df['home_team'] == infer_df['recent_team'], 1, 0)
+infer_df['opp'] = np.where((infer_df['player_is_home'] == 1), infer_df['recent_team'].map(games_dict), infer_df['recent_team'].map(reverse_games_dict))
 
 feature_list = ['player_id', 'position', 'week', 'team_year', 'player_year', 'opp_year',
                 'weekday', 'away_team', 'home_team', 'spread_line', 'away_spread_odds', 'home_spread_odds', 'player_is_home',
@@ -46,11 +51,19 @@ mse = mean_squared_error(infer_df['fantasy_points_ppr'], infer_df['Projected_PPR
 infer_df['Lowest_Projected_Points'] = (infer_df['Projected_PPR_Points'] - mse).round(1)
 infer_df['Lowest_Projected_Points'] = np.where(infer_df['Lowest_Projected_Points'] < 0, 0, infer_df['Lowest_Projected_Points'])
 infer_df['Highest_Projected_Points'] = (infer_df['Projected_PPR_Points'] + mse).round(1)
-infer_df = infer_df.rename(columns={"recent_team": "Team", "player_name": "Player"})
+infer_df = infer_df.rename(columns={"recent_team": "Team", "player_name": "Player", 'opp': 'Opponent',
+                                    'away_team': 'Away Team', 'home_team': 'Home Team'})
 
+weekly_folder = os.path.join(here, '/Weekly')
+if not os.path.exists(weekly_folder):
+    os.mkdir(weekly_folder)
 week = infer_df['week'].values[0]
-if not os.path.isfile(os.path.join(here, f'week{week}_df.csv')):
-    infer_df.to_csv(os.path.join(here, f'week{week}_df.csv'))
+if not os.path.isfile(os.path.join(weekly_folder, f'week{week}_df.csv')):
+    infer_df.to_csv(os.path.join(weekly_folder, f'week{week}_df.csv'))
+
+weekly_files = [os.path.join(here, csv) for csv in weekly_folder]
+
+#add weekly comparision df here
 
 checks = stl.columns(4)
 with checks[0]:
@@ -66,7 +79,7 @@ user_input_player = stl.text_input("Search team by city/name in the field below"
 if user_input_player:
     per_team = pd.DataFrame(infer_df[(infer_df['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                      (infer_df['Team'].str.contains(str(user_input_player.title().upper())))] \
-                            [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']])
+                            [['Team', 'Opponent', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']])
     per_team = per_team.reset_index(drop=True)
     stl.dataframe(per_team)
 else:
@@ -77,7 +90,7 @@ else:
         per_rb = per_rb.sort_values('Projected_PPR_Points', ascending=False)
         per_rb = pd.DataFrame(per_rb[(per_rb['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                          (per_rb['Team'].str.contains(str(user_input_player.title().upper())))] \
-                                    [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
+                                    [['Team', 'Opponent', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
                                       'Highest_Projected_Points']])
         per_rb['rank'] = range(len(per_rb))
         per_rb['rank'] = per_rb['rank'] + 1
@@ -90,7 +103,7 @@ else:
         per_qb = per_qb.sort_values('Projected_PPR_Points', ascending=False)
         per_qb = pd.DataFrame(per_qb[(per_qb['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                          (per_qb['Team'].str.contains(str(user_input_player.title().upper())))] \
-                                    [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
+                                    [['Team', 'Opponent', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
                                       'Highest_Projected_Points']])
         per_qb['rank'] = range(len(per_qb))
         per_qb['rank'] = per_qb['rank'] + 1
@@ -103,7 +116,7 @@ else:
         per_wr = per_wr.sort_values('Projected_PPR_Points', ascending=False)
         per_wr = pd.DataFrame(per_wr[(per_wr['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                          (per_wr['Team'].str.contains(str(user_input_player.title().upper())))] \
-                                    [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
+                                    [['Team', 'Opponent', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
                                       'Highest_Projected_Points']])
         per_wr['rank'] = range(len(per_wr))
         per_wr['rank'] = per_wr['rank'] + 1
@@ -116,7 +129,7 @@ else:
         per_te = per_te.sort_values('Projected_PPR_Points', ascending=False)
         per_te = pd.DataFrame(per_te[(per_te['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                          (per_te['Team'].str.contains(str(user_input_player.title().upper())))] \
-                                    [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
+                                    [['Team', 'Opponent', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points',
                                       'Highest_Projected_Points']])
         per_te['rank'] = range(len(per_te))
         per_te['rank'] = per_te['rank'] + 1
@@ -124,6 +137,6 @@ else:
         stl.dataframe(per_te)
     if not ((stl.session_state['RB']) | (stl.session_state['QB']) | (stl.session_state['WR']) | (stl.session_state['TE'])):
         infer_df.sort_values('Projected_PPR_Points', ascending=False) \
-            [['Team', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
+            [['Team', 'Opponent', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
     stl.text("")
 stl.text("")

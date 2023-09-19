@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
-from datetime import date
+from datetime import datetime, timedelta
+import time
+from zoneinfo import ZoneInfo
 from category_encoders import TargetEncoder, CatBoostEncoder
 from sklearn.metrics import mean_squared_error
 from joblib import dump, load
@@ -8,7 +10,7 @@ import streamlit as stl
 import os
 
 def date_getter():
-  today = date.today()
+  today = datetime.now(tz=ZoneInfo("America/Denver"))
   today = pd.to_datetime(today, format='%Y-%m-%d').normalize()
   year = today.strftime("%Y")
   return (today, int(year))
@@ -46,14 +48,14 @@ def player_sched_join(weekly, sched):
 
 def get_infer_df(sched, weekly):
   today, year = date_getter()[0], date_getter()[1]
-  sched['gameday'] = pd.to_datetime(sched['gameday'])
-  weekly['gameday'] = pd.to_datetime(weekly['gameday'])
+  sched['gameday'] = pd.to_datetime(sched['gameday'], utc=True)
+  weekly['gameday'] = pd.to_datetime(weekly['gameday'], utc=True)
   if today.strftime("%A") == 'Tuesday':
-      date_setter = sched[sched['gameday'] >= today + pd.Timedelta(2, unit="d")]
+      date_setter = sched[sched['gameday'] >= pd.to_datetime(today + pd.Timedelta(2, unit="d"))]
       first_game_of_week = date_setter['gameday'].min().normalize()
       last_game_of_week = first_game_of_week + pd.Timedelta(4, unit="d")
   if today.strftime("%A") == 'Wednesday':
-    date_setter = sched[sched['gameday'] >= today + pd.Timedelta(1, unit="d")]
+    date_setter = sched[sched['gameday'] >= pd.to_datetime(today + pd.Timedelta(1, unit="d"))]
     first_game_of_week = date_setter['gameday'].min().normalize()
     last_game_of_week = first_game_of_week + pd.Timedelta(3, unit="d")
   if today.strftime("%A") == 'Thursday':
@@ -61,19 +63,19 @@ def get_infer_df(sched, weekly):
     first_game_of_week = date_setter['gameday'].min().normalize()
     last_game_of_week = first_game_of_week + pd.Timedelta(3, unit="d")
   if today.strftime("%A") == 'Friday':
-        date_setter = sched[sched['gameday'] >= today - pd.Timedelta(1, unit="d")]
+        date_setter = sched[sched['gameday'] >= pd.to_datetime(today - pd.Timedelta(1, unit="d"))]
         first_game_of_week = date_setter['gameday'].min().normalize()
         last_game_of_week = first_game_of_week + pd.Timedelta(3, unit="d")
   if today.strftime("%A") == 'Saturday':
-        date_setter = sched[sched['gameday'] >= today - pd.Timedelta(2, unit="d")]
+        date_setter = sched[sched['gameday'] >= pd.to_datetime(today - pd.Timedelta(2, unit="d"))]
         first_game_of_week = date_setter['gameday'].min().normalize()
         last_game_of_week = first_game_of_week + pd.Timedelta(3, unit="d")
   if today.strftime("%A") == 'Sunday':
-        date_setter = sched[sched['gameday'] >= today - pd.Timedelta(3, unit="d")]
+        date_setter = sched[sched['gameday'] >= pd.to_datetime(today - pd.Timedelta(3, unit="d"))]
         first_game_of_week = date_setter['gameday'].min().normalize()
         last_game_of_week = first_game_of_week + pd.Timedelta(3, unit="d")
   if today.strftime("%A") == 'Monday':
-        date_setter = sched[sched['gameday'] >= today - pd.Timedelta(4, unit="d")]
+        date_setter = sched[sched['gameday'] >= pd.to_datetime(today - pd.Timedelta(4, unit="d"))]
         first_game_of_week = date_setter['gameday'].min().normalize()
         last_game_of_week = first_game_of_week + pd.Timedelta(3, unit="d")
 
