@@ -54,9 +54,9 @@ infer_df['Highest_Projected_Points'] = (infer_df['Projected_PPR_Points'] + mse).
 infer_df = infer_df.rename(columns={"recent_team": "Team", "player_name": "Player", 'opp': 'Opponent',
                                     'away_team': 'Away Team', 'home_team': 'Home Team'})
 
-weekly_folder = os.path.join(here, '/Weekly')
-# if not os.path.exists(weekly_folder):
-#     os.mkdir(weekly_folder)
+weekly_folder = os.path.join(here, 'Weekly')
+if not os.path.exists(weekly_folder):
+    os.mkdir(weekly_folder)
 week = infer_df['week'].values[0]
 if not os.path.isfile(os.path.join(weekly_folder, f'week{week}_df.csv')):
     infer_df.to_csv(os.path.join(weekly_folder, f'week{week}_df.csv'))
