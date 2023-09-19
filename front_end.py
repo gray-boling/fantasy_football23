@@ -2,7 +2,7 @@ import pandas as pd
 
 from utils import *
 #
-stl.title("NFL Fantasy Predictor 2023")
+# stl.title("NFL Fantasy Predictor 2023")
 #
 #
 here = os.path.dirname(os.path.abspath(__file__))
@@ -29,24 +29,27 @@ week = infer_df['week'].values[0]
 weekly = weekly[weekly['week'] == week]
 
 drop_cols = [col for col in sched.columns if 'season' not in col and 'week' not in col]
-
+#
 weekly = weekly.drop(drop_cols, axis=1)
 # weekly = player_sched_join(weekly, infer_df)
 infer_df = player_sched_join(weekly, infer_df)
-
-#TODO: fix
+infer_df = infer_df.loc[:, ~infer_df.columns.duplicated()]
+#
+# #TODO: fix
 infer_df['player_is_home'] = np.where(infer_df['home_team'] == infer_df['recent_team'], 1, 0)
 infer_df['opp'] = np.where((infer_df['player_is_home'] == 1), infer_df['recent_team'].map(games_dict), infer_df['recent_team'].map(reverse_games_dict))
 
+infer_df['is_favorite'] = np.where(((infer_df['recent_team'] == infer_df['away_team']) & (infer_df['away_moneyline'] < 0)), 1,
+                                 np.where(((infer_df['recent_team'] == infer_df['home_team']) & (infer_df['home_moneyline'] < 0)), 1, 0))
+
 feature_list = ['player_id', 'position', 'week', 'team_year', 'player_year', 'opp_year',
                 'weekday', 'away_team', 'home_team', 'spread_line', 'away_spread_odds', 'home_spread_odds', 'player_is_home',
-                'total_line', 'under_odds', 'over_odds', 'div_game', 'roof'
+                'total_line', 'under_odds', 'over_odds', 'div_game', 'roof', 'is_favorite'
                 ] + \
-                [col for col in weekly.columns if '_avg' in col] + \
-                [col for col in weekly.columns if '_std' in col] + \
-                [col for col in weekly.columns if '_last' in col] + \
-                [col for col in weekly.columns if '_opp' in col]
-
+                [col for col in infer_df.columns if '_avg' in col] + \
+                [col for col in infer_df.columns if '_std' in col] + \
+                [col for col in infer_df.columns if '_last' in col] + \
+                [col for col in infer_df.columns if '_opp' in col]
 
 infer_df['gb_pipe_preds'] = gb_pipe.predict(infer_df[feature_list])
 infer_df['lin_reg_pipe_preds'] = lin_reg_pipe.predict(infer_df[feature_list])
@@ -58,6 +61,7 @@ mse = mean_squared_error(infer_df['fantasy_points_ppr'], infer_df['Projected_PPR
 infer_df['Lowest_Projected_Points'] = (infer_df['Projected_PPR_Points'] - mse).round(1)
 infer_df['Lowest_Projected_Points'] = np.where(infer_df['Lowest_Projected_Points'] < 0, 0, infer_df['Lowest_Projected_Points'])
 infer_df['Highest_Projected_Points'] = (infer_df['Projected_PPR_Points'] + mse).round(1)
+
 infer_df = infer_df.rename(columns={"recent_team": "Team", "player_name": "Player", 'opp': 'Opponent',
                                     'away_team': 'Away Team', 'home_team': 'Home Team'})
 
@@ -86,6 +90,9 @@ if user_input_player:
     per_team = pd.DataFrame(infer_df[(infer_df['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                      (infer_df['Team'].str.contains(str(user_input_player.title().upper())))] \
                             [['Team', 'Opponent', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']])
+    # per_team = pd.DataFrame(infer_df[(infer_df['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
+    #                                  (infer_df['recent_team'].str.contains(str(user_input_player.title().upper())))] \
+    #                         [feature_list])
     per_team = per_team.reset_index(drop=True)
     stl.dataframe(per_team)
 else:
