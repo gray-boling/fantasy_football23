@@ -18,11 +18,18 @@ lin_reg_pipe = load(os.path.join(here, 'LinearRegression.joblib'))
 ran_for_pipe = load(os.path.join(here, 'RandomForestRegressor.joblib'))
 
 infer_df = get_infer_df(sched, weekly)
+
 games_dict = dict(zip(infer_df['home_team'], infer_df['away_team']))
 reverse_games_dict = {v: k for k, v in games_dict.items()}
 
 weekly['week'] = weekly['week'] + 1
+
+#get week from schedule
+week = infer_df['week'].values[0]
+weekly = weekly[weekly['week'] == week]
+
 drop_cols = [col for col in sched.columns if 'season' not in col and 'week' not in col]
+
 weekly = weekly.drop(drop_cols, axis=1)
 # weekly = player_sched_join(weekly, infer_df)
 infer_df = player_sched_join(weekly, infer_df)
@@ -57,7 +64,6 @@ infer_df = infer_df.rename(columns={"recent_team": "Team", "player_name": "Playe
 weekly_folder = os.path.join(here, 'Weekly')
 if not os.path.exists(weekly_folder):
     os.mkdir(weekly_folder)
-week = infer_df['week'].values[0]
 if not os.path.isfile(os.path.join(weekly_folder, f'week{week}_df.csv')):
     infer_df.to_csv(os.path.join(weekly_folder, f'week{week}_df.csv'))
 

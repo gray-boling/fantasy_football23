@@ -51,7 +51,7 @@ def get_infer_df(sched, weekly):
   sched['gameday'] = pd.to_datetime(sched['gameday'], utc=True)
   weekly['gameday'] = pd.to_datetime(weekly['gameday'], utc=True)
   if today.strftime("%A") == 'Tuesday':
-      date_setter = sched[sched['gameday'] >= pd.to_datetime(today + pd.Timedelta(2, unit="d"))]
+      date_setter = sched[sched['gameday'] >= pd.to_datetime(today + pd.Timedelta(1, unit="d"))]
       first_game_of_week = date_setter['gameday'].min().normalize()
       last_game_of_week = first_game_of_week + pd.Timedelta(4, unit="d")
   if today.strftime("%A") == 'Wednesday':
