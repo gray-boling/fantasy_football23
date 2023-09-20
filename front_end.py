@@ -33,9 +33,9 @@ drop_cols = [col for col in sched.columns if 'season' not in col and 'week' not 
 weekly = weekly.drop(drop_cols, axis=1)
 # weekly = player_sched_join(weekly, infer_df)
 infer_df = player_sched_join(weekly, infer_df)
+#TODO: test
 infer_df = infer_df.loc[:, ~infer_df.columns.duplicated()]
-#
-# #TODO: fix
+
 infer_df['player_is_home'] = np.where(infer_df['home_team'] == infer_df['recent_team'], 1, 0)
 infer_df['opp'] = np.where((infer_df['player_is_home'] == 1), infer_df['recent_team'].map(games_dict), infer_df['recent_team'].map(reverse_games_dict))
 
@@ -149,6 +149,8 @@ else:
         per_te.set_index('rank', inplace=True)
         stl.dataframe(per_te)
     if not ((stl.session_state['RB']) | (stl.session_state['QB']) | (stl.session_state['WR']) | (stl.session_state['TE'])):
+        infer_df['rank'] = range(len(infer_df))
+        infer_df['rank'] = infer_df['rank'] + 1
         infer_df.sort_values('Projected_PPR_Points', ascending=False) \
             [['Team', 'Opponent', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
     stl.text("")
