@@ -8,9 +8,9 @@ from utils import *
 here = os.path.dirname(os.path.abspath(__file__))
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(here, "fantasy-nfl-2023-d230a97c57f6.json")
-client = storage.Client()
+# client = storage.Client()
 bucket_name = 'cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55'
-bucket = client.get_bucket(bucket_name)
+# bucket = client.get_bucket(bucket_name)
 #
 # sched_url = 'gs://cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55/datasets/full_season.csv'
 # weekly_url = 'gs://cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55/datasets/weekly_calc_stats.csv'
