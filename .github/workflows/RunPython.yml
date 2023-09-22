@@ -29,6 +29,6 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Run a multi-line script
-        run: |
-          python front_end.py
+#      - name: Run a multi-line script
+#        run: |
+#          python front_end.py
