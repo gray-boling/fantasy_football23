@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "fantasy-nfl-2023",
+  "private_key_id": "e1d5888a52c16b5b3f8c0d51adcdc767a230f340",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDbeLszd/GDBmKX\n2WRUtalEej1lN8GHm8HmWBP/fxpUXG+mObyB/der6afLtixpi2avL3KdwPO0s5XM\n9BC8fELPu5ml5m7pYgvHK07ps8R6gfZnx7sKRAL+gSnm/fZ0BTHRRq3OVHHs2+X8\n55FMNHeT67hJWqMSjCn2kiocaXrwEdL2Hz4G2SGYtCUCmmf5VOVYzmugbvPVaJVg\nGIkluJ2qaZu85wrlzIST3gJni+PjvyOe6EshV1Cu3Hin1/cPe3dtifZIRAcFB18A\n+Y/fX8/vlv14PW+gy0UusxjmmpkvaR9CtTjzs3qEbw1yBGQr+EgDNlsZBwb58i31\nbr7yL+ZLAgMBAAECggEAGoxfMMRTPa3vDT6p0/6+7AlRa0YJrhVu/iXXaB0ARVuC\nfKbCoS2LV5YFyy737l3Y3QYt+jFAtFzTmR2eTKlHYl48zC8KFEcySjR4m5fjA41n\nDiTAq7w7FH2cC6owPtabW8e4ofCLG24k7ak2up4k0jWTGaR80h3hvEbwEHcd/PN2\n+w4aW3cOr/H4HhKDEfxXiAbWGbrsS75jriWPh8G85R9Wz0cbnbBCuqoZmcVtB8oC\ngbJQ0VUDr0X3Btg60rm6MuxxBIgVPdSLz8rDBjfPnevxRB9BXD5VV6RJp7NC4d7+\nlI5DGWc3j1JZxdhuFBgrOP0ee+Z7TZ39ng/OEdr0GQKBgQDzldPCnezaVG3bIyX2\nRMYI1fLTrY70OVSSAcFT17zHoTV53togPknapqO/AgQ0xluE11AOYjvtzqr+nLz6\nk+oq0NXLVjTL/n5HqfXoI8fhSIYBMhCo3XfeIjmCpSZgONPSWsn/ZopD0CJbzRqi\ncRLCIeOfAF/6Ju9PIAVqf9wLrwKBgQDmqEgfA9MuvwnIOuKprvrRehhEHHogkas2\nRpDkYabSkw+wB24N5vfWffR4xMTZ+FaTU1PpkuIWxpuZmUoZp5BSeqA2lRDthxB+\nAbZwtTn9TN4ZFlVqm2w82AtzcgCWcbdrH8zAmLNWommoIh0BrvvOEbUBZ67QrAD3\n6XvA6mCqJQKBgQDtVWuZsWQoqqDLJmkDlajazRMnGnEyFnYHOPyUY5zFaZaAIxmm\n1uoAx+K95goRHb/oJB4VlbNMltRW9oLPJ7W+d/IHh/wzUsjZrIkz4UEMiSxAF/bR\ngdAcOH6Og7lrgZMp31n3poJLZo1DowkzgzbCvmBY+PWK98qt7sY4KVJOcwKBgAK2\nqhqLTfm3z6KmZrI+V78NI6nxd9JYRF5gGCZHq9HAXyff/oB1XicM1kpxbituS35y\nNYOC8dv4vC3jasbAfOcrgCUEPe29cAk7dez/hM4hEF/VLm4RpAVXOVNDXRRoBBNj\njWIaqcl0IbATrqmtaFL1TF7W3GyiCWThP052s2ptAoGAe88EXJQ7gIH9WKrxkdkV\nHsB2PgdJqDPxypqXfZRYuCsNqDRJ9B1cZ9XtDLUjPkVOY3CJLW32shY6PIzRpeiO\nNgM0t5/Opyz4jjF0UNng4CiTjQU9I4APvQjVry22krxnBAr6BV/G+rFB4wpJqW2j\nN2jdjkgujGj7Y21Bzv9MVQM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "storage-manager@fantasy-nfl-2023.iam.gserviceaccount.com",
+  "client_id": "108797372150326617909",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/storage-manager%40fantasy-nfl-2023.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

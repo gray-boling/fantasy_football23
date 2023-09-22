@@ -1,0 +1,8 @@
+env:
+  client_secret = ${{ secrets.STORAGE_ACCOUNT }}
+
+jobs:
+  run-python:
+    - name: Run Project
+      run:
+        python front_end.py
