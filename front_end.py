@@ -2,7 +2,7 @@ import pandas as pd
 
 from utils import *
 #
-# stl.title("NFL Fantasy Predictor 2023")
+stl.title("NFL Fantasy Predictor 2023")
 #
 #
 here = os.path.dirname(os.path.abspath(__file__))
@@ -10,7 +10,9 @@ here = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = os.environ[client_secret]
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = SECRET_KEY
-# os.path.join(here, "fantasy-nfl-2023-e1d5888a52c1.json")
+
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(here, "fantasy-nfl-2023-1b8c14c94d9a.json")
+
 # client = storage.Client()
 bucket_name = 'cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55'
 # bucket = client.get_bucket(bucket_name)
