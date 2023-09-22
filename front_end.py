@@ -7,7 +7,7 @@ stl.title("NFL Fantasy Predictor 2023")
 #
 here = os.path.dirname(os.path.abspath(__file__))
 
-SECRET_KEY = os.environ['client_secret']
+SECRET_KEY = os.environ["client_secret"]
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = SECRET_KEY
 
