@@ -165,10 +165,10 @@ else:
         per_te.set_index('rank', inplace=True)
         stl.dataframe(per_te)
     if not ((stl.session_state['RB']) | (stl.session_state['QB']) | (stl.session_state['WR']) | (stl.session_state['TE'])):
+        infer_df.sort_values('Projected_PPR_Points', ascending=False) \
+            [['Team', 'Opponent', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
         infer_df['rank'] = range(len(infer_df))
         infer_df['rank'] = infer_df['rank'] + 1
         infer_df.set_index('rank', inplace=True)
-        infer_df.sort_values('Projected_PPR_Points', ascending=False) \
-            [['Team', 'Opponent', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
     stl.text("")
 stl.text("")
