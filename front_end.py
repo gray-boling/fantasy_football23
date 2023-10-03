@@ -2,8 +2,19 @@
 
 from utils import *
 #
-stl.title("NFL Fantasy Predictor 2023")
-#
+# stl.title("NFL Fantasy Predictor 2023")
+
+stl.set_page_config(
+    page_title="NFL Fantasy Predictor 2023",
+    # page_icon="🧊",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        # 'Get Help': 'https://www.extremelycoolapp.com/help',
+        # 'Report a bug': "https://www.extremelycoolapp.com/bug",
+        'About': "# This is a NFL DFS projection tool. Make your own lineup with this system's help!"
+    }
+)
 #
 here = os.path.dirname(os.path.abspath(__file__))
 #
@@ -78,6 +89,7 @@ week = infer_df['week'].values[0]
 # infer_df['Lowest_Projected_Points'] = np.where(infer_df['Lowest_Projected_Points'] < 0, 0, infer_df['Lowest_Projected_Points'])
 # infer_df['Highest_Projected_Points'] = (infer_df['Projected_PPR_Points'] + mse).round(1)
 #
+infer_df.dropna(subset=['opp'], inplace=True)
 infer_df = infer_df.rename(columns={"recent_team": "Team", "player_name": "Player", 'opp': 'Opponent',
                                     'away_team': 'Away Team', 'home_team': 'Home Team'})
 
@@ -165,10 +177,11 @@ else:
         per_te.set_index('rank', inplace=True)
         stl.dataframe(per_te)
     if not ((stl.session_state['RB']) | (stl.session_state['QB']) | (stl.session_state['WR']) | (stl.session_state['TE'])):
-        infer_df.sort_values('Projected_PPR_Points', ascending=False) \
+        infer_df = infer_df.sort_values('Projected_PPR_Points', ascending=False) \
             [['Team', 'Opponent', 'Player', 'Projected_PPR_Points', 'Lowest_Projected_Points', 'Highest_Projected_Points']]
         infer_df['rank'] = range(len(infer_df))
         infer_df['rank'] = infer_df['rank'] + 1
         infer_df.set_index('rank', inplace=True)
+        stl.dataframe(infer_df)
     stl.text("")
 stl.text("")
