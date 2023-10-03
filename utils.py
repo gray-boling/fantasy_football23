@@ -1,4 +1,4 @@
-# !pip install
+pip install st-pages
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
