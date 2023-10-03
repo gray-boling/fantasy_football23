@@ -15,14 +15,9 @@ stl.set_page_config(
         'About': "This is a NFL DFS projection tool. Make your own lineup with this system's help!"
     }
 )
+stl.title("NFL Fantasy Predictor 2023")
 here = os.path.dirname(os.path.abspath(__file__))
 
-show_pages(
-    [
-        Page("front_end.py", "Main Page"),
-        Page(os.path.join(here, 'pages/Historical Predictions.py'), "Historical Predictions")
-    ]
-)
 #
 #
 # SECRET_KEY = os.environ["client_secret"]
