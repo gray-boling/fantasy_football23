@@ -12,11 +12,17 @@ stl.set_page_config(
     menu_items={
         # 'Get Help': 'https://www.extremelycoolapp.com/help',
         # 'Report a bug': "https://www.extremelycoolapp.com/bug",
-        'About': "# This is a NFL DFS projection tool. Make your own lineup with this system's help!"
+        'About': "This is a NFL DFS projection tool. Make your own lineup with this system's help!"
     }
 )
-#
 here = os.path.dirname(os.path.abspath(__file__))
+show_pages(
+    [
+        Page("front_end.py", "Main Page"),
+        Page(os.path.join(here, 'pages/Historical Predictions.py'), "Historical Predictions")
+    ]
+)
+#
 #
 # SECRET_KEY = os.environ["client_secret"]
 #
@@ -27,68 +33,14 @@ here = os.path.dirname(os.path.abspath(__file__))
 # client = storage.Client()
 bucket_name = 'cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55'
 # bucket = client.get_bucket(bucket_name)
-#
-# sched_url = 'gs://cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55/datasets/full_season.csv'
-# weekly_url = 'gs://cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55/datasets/weekly_calc_stats.csv'
 # infer_df_url = 'gs://cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55/datasets/infer_df.csv'
-# sched_url = os.path.join(here, 'full_season.csv')
-# weekly_url = os.path.join(here, 'weekly_calc_stats.csv')
 infer_df_url = os.path.join(here, 'infer_df.csv')
 #
-# sched = pd.read_csv(sched_url, encoding='utf-8')
-# weekly = pd.read_csv(weekly_url, encoding='utf-8')
 infer_df = pd.read_csv(infer_df_url, encoding='utf-8')
 
-#
-# gb_pipe = load('GradientBoostingRegressor.joblib')
-# lin_reg_pipe = load('LinearRegression.joblib')
-# ran_for_pipe = load('RandomForestRegressor.joblib')
-#
-# infer_df = get_infer_df(sched, weekly)
-#
-# games_dict = dict(zip(infer_df['home_team'], infer_df['away_team']))
-# reverse_games_dict = {v: k for k, v in games_dict.items()}
-#
-# weekly['week'] = weekly['week'] + 1
-#
 # #get week from schedule
 week = infer_df['week'].values[0]
-# weekly = weekly[weekly['week'] == week]
-# #
-# drop_cols = [col for col in sched.columns if 'season' not in col and 'week' not in col]
-# #
-# weekly = weekly.drop(drop_cols, axis=1)
-# weekly = player_sched_join(weekly, infer_df)
-# infer_df = player_sched_join(weekly, infer_df)
-# # #TODO: test
-# infer_df = infer_df.loc[:, ~infer_df.columns.duplicated()]
-#
-# infer_df['player_is_home'] = np.where(infer_df['home_team'] == infer_df['recent_team'], 1, 0)
-# infer_df['opp'] = np.where((infer_df['player_is_home'] == 1), infer_df['recent_team'].map(games_dict), infer_df['recent_team'].map(reverse_games_dict))
-#
-# infer_df['is_favorite'] = np.where(((infer_df['recent_team'] == infer_df['away_team']) & (infer_df['away_moneyline'] < 0)), 1,
-#                                  np.where(((infer_df['recent_team'] == infer_df['home_team']) & (infer_df['home_moneyline'] < 0)), 1, 0))
-# #
-# feature_list = ['player_id', 'position', 'week', 'team_year', 'player_year', 'opp_year',
-#                 'weekday', 'away_team', 'home_team', 'spread_line', 'away_spread_odds', 'home_spread_odds', 'player_is_home',
-#                 'total_line', 'under_odds', 'over_odds', 'div_game', 'roof', 'is_favorite'
-#                 ] + \
-#                 [col for col in infer_df.columns if '_avg' in col] + \
-#                 [col for col in infer_df.columns if '_std' in col] + \
-#                 [col for col in infer_df.columns if '_last' in col] + \
-#                 [col for col in infer_df.columns if '_opp' in col]
-# #
-# infer_df['gb_pipe_preds'] = gb_pipe.predict(infer_df[feature_list])
-# infer_df['lin_reg_pipe_preds'] = lin_reg_pipe.predict(infer_df[feature_list])
-# infer_df['ran_for_pipe_preds'] = ran_for_pipe.predict(infer_df[feature_list])
-#
-# infer_df['Projected_PPR_Points'] = (infer_df['gb_pipe_preds'] + infer_df['lin_reg_pipe_preds'] + infer_df['ran_for_pipe_preds'])
-# infer_df['Projected_PPR_Points'] = (infer_df['Projected_PPR_Points'] / float(3)).round(1)
-# mse = mean_squared_error(infer_df['fantasy_points_ppr'], infer_df['Projected_PPR_Points'], squared=False)
-# infer_df['Lowest_Projected_Points'] = (infer_df['Projected_PPR_Points'] - mse).round(1)
-# infer_df['Lowest_Projected_Points'] = np.where(infer_df['Lowest_Projected_Points'] < 0, 0, infer_df['Lowest_Projected_Points'])
-# infer_df['Highest_Projected_Points'] = (infer_df['Projected_PPR_Points'] + mse).round(1)
-#
+
 infer_df.dropna(subset=['opp'], inplace=True)
 infer_df = infer_df.rename(columns={"recent_team": "Team", "player_name": "Player", 'opp': 'Opponent',
                                     'away_team': 'Away Team', 'home_team': 'Home Team'})
@@ -113,7 +65,7 @@ with checks[2]:
 with checks[3]:
     stl.checkbox('Sort TEs', key='TE')
 
-user_input_player = stl.text_input("Search team by city/name in the field below")
+user_input_player = stl.text_input("Filter team by city/name in the field below")
 if user_input_player:
     per_team = pd.DataFrame(infer_df[(infer_df['team_full_name'].str.contains(str(user_input_player.title().upper()))) | \
                                      (infer_df['Team'].str.contains(str(user_input_player.title().upper())))] \
