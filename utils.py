@@ -1,4 +1,3 @@
-!pip install st-pages
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
@@ -9,7 +8,7 @@ from sklearn.metrics import mean_squared_error
 from joblib import dump, load
 import streamlit as stl
 import os
-from st_pages import Page, show_pages, add_page_title
+from st_pages import Page, show_pages, add_page_title, show_pages_from_config
 # from google.cloud import storage
 
 def date_getter():

@@ -16,12 +16,13 @@ stl.set_page_config(
     }
 )
 here = os.path.dirname(os.path.abspath(__file__))
-show_pages(
-    [
-        Page("front_end.py", "Main Page"),
-        Page(os.path.join(here, 'pages/Historical Predictions.py'), "Historical Predictions")
-    ]
-)
+show_pages_from_config()
+# show_pages(
+#     [
+#         Page("front_end.py", "Main Page"),
+#         Page(os.path.join(here, 'pages/Historical Predictions.py'), "Historical Predictions")
+#     ]
+# )
 #
 #
 # SECRET_KEY = os.environ["client_secret"]
