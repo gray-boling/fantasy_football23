@@ -49,7 +49,6 @@ six==1.16.0
 smmap==5.0.0
 statsmodels==0.14.0
 st-pages==0.4.5
-st_pages==0.4.5
 streamlit==1.27.1
 tenacity==8.2.3
 threadpoolctl==3.2.0
