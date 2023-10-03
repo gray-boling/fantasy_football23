@@ -8,7 +8,7 @@ from sklearn.metrics import mean_squared_error
 from joblib import dump, load
 import streamlit as stl
 import os
-from st_pages import Page, show_pages, add_page_title, show_pages_from_config
+from st-pages import Page, show_pages, add_page_title, show_pages_from_config
 # from google.cloud import storage
 
 def date_getter():
