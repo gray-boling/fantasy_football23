@@ -4,13 +4,3 @@ backgroundColor="#013369"
 secondaryBackgroundColor="#d50a0a"
 textColor="#ffffff"
 font="monospace"
-
-
-[[pages]]
-path = "front_end.py"
-name = "Main Page"
-icon = "🏠"
-
-[[pages]]
-path = "Historical Predictions.py"
-name = "Historical Predictions"

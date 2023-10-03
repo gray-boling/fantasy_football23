@@ -5,11 +5,11 @@ from front_end import *
 # Specify what pages should be shown in the sidebar, and what their titles
 # and icons should be
 show_pages_from_config()
-# show_pages(
-#     [
-#         Page("front_end.py", "Main Page"),
-#         Page(os.path.join(here, 'pages/Historical Predictions.py'), "Historical Predictions")
-#     ]
+show_pages(
+    [
+        Page("front_end.py", "Main Page"),
+        Page(os.path.join(here, 'pages/Historical Predictions.py'), "Historical Predictions")
+    ]
 # )
 #
 # stl.title("NFL Fantasy Predictor 2023")
