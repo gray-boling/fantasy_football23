@@ -17,15 +17,24 @@ for filename in os.listdir(directory):
       weekly_dfs.append(preds_df)
 weekly_dfs = pd.concat(weekly_dfs)
 
+weekly_url = os.path.join(here, 'weekly_calc_stats.csv')
+weekly = pd.read_csv(weekly_url, encoding='utf-8')
+
+
 weekly_dfs = weekly_dfs.loc[:, ~weekly_dfs.columns.duplicated()]
 weekly_dfs = weekly_dfs.sort_values(['season', 'week'], ascending=True)
-weekly_dfs['Actual_PPR_Points_Scored'] = weekly_dfs.groupby('player_id')['fantasy_points_ppr'].shift(-1)
-weekly_dfs['diff'] = weekly_dfs['Actual_PPR_Points_Scored'] - weekly_dfs['Projected_PPR_Points']
+weekly_dfs.drop('fantasy_points_ppr', axis=1, inplace=True)
+weekly_dfs = pd.merge(weekly_dfs, weekly[['season', 'week', 'player_id', 'fantasy_points_ppr']], on=['season', 'week', 'player_id'], how='left')
+
+weekly_dfs['Actual_PPR_Points_Scored'] = weekly_dfs['fantasy_points_ppr']
+weekly_dfs['diff'] =  weekly_dfs['Actual_PPR_Points_Scored'] - weekly_dfs['Projected_PPR_Points']
 weekly_dfs['AVG_Difference_in_Points_Scored_vs_Predicted'] = weekly_dfs.groupby('player_id')['diff'].transform('mean')
 weekly_dfs['AVG_Difference_in_Points_Scored_vs_Predicted'] = weekly_dfs['AVG_Difference_in_Points_Scored_vs_Predicted'].round(1)
+
 # weekly_dfs.sort_values(['AVG_Difference_in_Points_Scored_vs_Predicted'], ascending=False)[['Team', 'week', 'Opponent',  'Player', 'Projected_PPR_Points', 'Actual_PPR_Points_Scored', 'AVG_Difference_in_Points_Scored_vs_Predicted']]
 weekly_dfs = weekly_dfs.rename(columns={"week": "Week"})
 weekly_dfs = weekly_dfs.sort_values(['AVG_Difference_in_Points_Scored_vs_Predicted'], ascending=False)
+
 tmp_dfs = weekly_dfs.drop_duplicates('Player')
 tmp_dfs['rank'] = range(len(tmp_dfs))
 tmp_dfs['rank'] = tmp_dfs['rank'] + 1
