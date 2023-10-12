@@ -18,19 +18,16 @@ stl.set_page_config(
 stl.title("NFL Fantasy Predictor 2023")
 here = os.path.dirname(os.path.abspath(__file__))
 
-#
-#
 # SECRET_KEY = os.environ["client_secret"]
-#
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = SECRET_KEY
-
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(here, "fantasy-nfl-2023-051c047c2915.json")
-#
 # client = storage.Client()
 # bucket_name = 'cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55'
 # bucket = client.get_bucket(bucket_name)
-# infer_df_url = 'gs://cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55/datasets/infer_df.csv'
-infer_df_url = os.path.join(here, 'infer_df.csv')
+
+
+infer_df_url = 'gs://cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55/datasets/infer_df.csv'
+# infer_df_url = os.path.join(here, 'infer_df.csv')
 #
 infer_df = pd.read_csv(infer_df_url, encoding='utf-8')
 
