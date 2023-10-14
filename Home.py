@@ -20,14 +20,12 @@ here = os.path.dirname(os.path.abspath(__file__))
 
 # SECRET_KEY = os.environ["client_secret"]
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = SECRET_KEY
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(here, "fantasy-nfl-2023-051c047c2915.json")
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(here, ".json")
 # client = storage.Client()
 # bucket_name = 'cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55'
 # bucket = client.get_bucket(bucket_name)
-os.environ["workload_identity_provider"] = stl.secrets["GCS_PROVIDER"]
-os.environ["service_account"] = stl.secrets["GCS_SERVICE"]
-# workload_identity_provider = stl.secrets["GCS_PROVIDER"]
-# service_account = stl.secrets["GCS_SERVICE"]
+SECRET_KEY = os.environ["**st.secrets.secret_key"]
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = SECRET_KEY
 
 
 infer_df_url = 'gs://cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55/datasets/infer_df.csv'
