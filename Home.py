@@ -18,7 +18,7 @@ stl.set_page_config(
 stl.title("NFL Fantasy Predictor 2023")
 here = os.path.dirname(os.path.abspath(__file__))
 
-SECRET_KEY = os.environ["GCS_SECRET"]
+SECRET_KEY = os.environ["credentials_json"]
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = SECRET_KEY
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(here, ".json")
 # client = storage.Client()
