@@ -18,22 +18,20 @@ stl.set_page_config(
 stl.title("NFL Fantasy Predictor 2023")
 here = os.path.dirname(os.path.abspath(__file__))
 
-# SECRET_KEY = os.environ["client_secret"]
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = SECRET_KEY
+SECRET_KEY = os.environ["GCS_SECRET"]
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = SECRET_KEY
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(here, ".json")
 # client = storage.Client()
 # bucket_name = 'cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55'
 # bucket = client.get_bucket(bucket_name)
-from st_files_connection import FilesConnection
-conn = st.experimental_connection('gcs', type=FilesConnection)
-infer_df = conn.read('gs://cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55/datasets/infer_df.csv', input_format="csv", ttl=600)
 
 
 
-# infer_df_url = 'gs://cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55/datasets/infer_df.csv'
+
+infer_df_url = 'gs://cloud-ai-platform-cf9cca39-5f3b-4465-b28a-64ee11959e55/datasets/infer_df.csv'
 # infer_df_url = os.path.join(here, 'infer_df.csv')
 #
-# infer_df = pd.read_csv(infer_df_url, encoding='utf-8')
+infer_df = pd.read_csv(infer_df_url, encoding='utf-8')
 
 # #get week from schedule
 week = infer_df['week'].values[0]
