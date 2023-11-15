@@ -45,7 +45,7 @@ weekly_dfs.set_index('rank', inplace=True)
 
 stl.write('Negative numbers represent a player under-performing his predicted points.'
           ' Positive numbers represent an over-performance.')
-week_option = stl.selectbox('Look at specific week', (None, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+week_option = stl.selectbox('Look at specific week', (None, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18))
 if week_option:
     stl.dataframe(weekly_dfs[weekly_dfs['Week'] == week_option].sort_values(['AVG_Difference_in_Points_Scored_vs_Predicted'], ascending=False)[
                       ['Team', 'Week', 'Player', 'Projected_PPR_Points', 'Actual_PPR_Points_Scored',
